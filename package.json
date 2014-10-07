@@ -1,0 +1,23 @@
+{
+  "name": "rump-static",
+  "description": "Rump piece for handling static files",
+  "author": "Juan Placencia",
+  "version": "0.1.0",
+  "license": "MIT",
+  "homepage": "https://github.com/rumps/rump-static",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rumps/rump-static"
+  },
+  "main": "./index.js",
+  "dependencies": {
+    "merge": "^1.2.0",
+    "require-all": "0.0.8",
+    "gulp-changed": "^1.0.0",
+    "gulp-plumber": "~0.6.6",
+    "gulp-util": "^3.0.1"
+  },
+  "peerDependencies": {
+    "rump": "~0.1.1"
+  }
+}

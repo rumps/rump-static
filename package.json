@@ -13,7 +13,7 @@
   "dependencies": {
     "extend": "^2.0.0",
     "require-all": "^0.0.8",
-    "globule": "^2.0.0",
+    "globule": "^0.2.0",
     "gulp-changed": "^1.0.0",
     "gulp-plumber": "^0.6.6",
     "gulp-util": "^3.0.1"

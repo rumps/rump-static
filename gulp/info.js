@@ -1,10 +1,10 @@
 'use strict';
 
+var chalk = require('chalk');
 var globule = require('globule');
 var gulp = require('gulp');
 var path = require('path');
 var rump = require('rump');
-var util = require('gulp-util');
 
 gulp.task('rump:info:static', function() {
   var glob = path.join(rump.configs.main.paths.source.root,
@@ -16,15 +16,19 @@ gulp.task('rump:info:static', function() {
   var destination = path.join(rump.configs.main.paths.destination.root,
                               rump.configs.main.paths.destination.static);
 
-  util.log('Static files are copied from', util.colors.green(source),
-           'to', util.colors.green(destination));
+  console.log();
+  console.log(chalk.magenta('--- Static'));
+  console.log('Static files from', chalk.green(source),
+              'are copied to', chalk.green(destination));
 
   if(files.length) {
-    util.log('Affected files:');
+    console.log('Affected files:');
     files.forEach(function(file) {
-      util.log(util.colors.blue(path.relative(source, file)));
+      console.log(chalk.blue(path.relative(source, file)));
     });
   }
+
+  console.log();
 });
 
 gulp.tasks['rump:info'].dep.push('rump:info:static');

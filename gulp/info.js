@@ -16,17 +16,18 @@ gulp.task('rump:info:static', function() {
   var destination = path.join(rump.configs.main.paths.destination.root,
                               rump.configs.main.paths.destination.static);
 
+  if(!files.length) {
+    return;
+  }
+
   console.log();
   console.log(chalk.magenta('--- Static'));
   console.log('Static files from', chalk.green(source),
               'are copied to', chalk.green(destination));
-
-  if(files.length) {
-    console.log('Affected files:');
-    files.forEach(function(file) {
-      console.log(chalk.blue(path.relative(source, file)));
-    });
-  }
+  console.log('Affected files:');
+  files.forEach(function(file) {
+    console.log(chalk.blue(path.relative(source, file)));
+  });
 
   console.log();
 });

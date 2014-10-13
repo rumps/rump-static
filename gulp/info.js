@@ -5,6 +5,7 @@ var globule = require('globule');
 var gulp = require('gulp');
 var path = require('path');
 var rump = require('rump');
+var pkg = require('../package');
 
 gulp.task('rump:info:static', function() {
   var glob = path.join(rump.configs.main.paths.source.root,
@@ -21,7 +22,7 @@ gulp.task('rump:info:static', function() {
   }
 
   console.log();
-  console.log(chalk.magenta('--- Static'));
+  console.log(chalk.magenta('--- Static', 'v' + pkg.version));
   console.log('Static files from', chalk.green(source),
               'are copied to', chalk.green(destination));
   console.log('Affected files:');

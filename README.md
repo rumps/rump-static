@@ -17,13 +17,14 @@ The following is appended to the core Rump API:
 This module adds the following tasks:
 - `rump:build:static` will copy all files from source to destination. This task
   is also added to the `rump:build` task. For more information on source and
-  destination paths see `rump.configure()` below.
+  destination paths see `rump.configure()` below. This task is also added to
+  the `rump:build` task.
 - `rump:watch:static` will run `rump:build:static`, then monitor for changes
   and copy updated files as needed. This task is also added to the `rump:watch`
   task.
 - `rump:info:static` will display information on what this specific module
   does, specifically the source and destination paths as well as what files
-  would get copied.
+  would get copied. This task is also added to the `rump:info` task.
 
 ### `rump.configure(options)`
 Redefine options for Rump and Rump modules to follow. In addition to what

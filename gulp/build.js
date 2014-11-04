@@ -15,10 +15,10 @@ gulp.task(rump.taskName('build:static'), function() {
                               rump.configs.main.paths.destination.static);
 
   return gulp
-  .src([source].concat(rump.configs.main.globs.global))
-  .pipe((rump.configs.watch ? plumber : util.noop)())
-  .pipe((rump.configs.watch ? changed : util.noop)(destination))
-  .pipe(gulp.dest(destination));
+    .src([source].concat(rump.configs.main.globs.global))
+    .pipe((rump.configs.watch ? plumber : util.noop)())
+    .pipe((rump.configs.watch ? changed : util.noop)(destination))
+    .pipe(gulp.dest(destination));
 });
 
 gulp.tasks[rump.taskName('build')].dep.push(rump.taskName('build:static'));

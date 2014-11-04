@@ -7,7 +7,7 @@ var path = require('path');
 var rump = require('rump');
 var pkg = require('../package');
 
-gulp.task('rump:info:static', function() {
+gulp.task(rump.taskName('info:static'), function() {
   var glob = path.join(rump.configs.main.paths.source.root,
                        rump.configs.main.paths.source.static,
                        rump.configs.main.globs.build.static);
@@ -33,4 +33,4 @@ gulp.task('rump:info:static', function() {
   console.log();
 });
 
-gulp.tasks['rump:info'].dep.push('rump:info:static');
+gulp.tasks[rump.taskName('info')].dep.push(rump.taskName('info:static'));

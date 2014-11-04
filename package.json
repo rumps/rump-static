@@ -2,7 +2,7 @@
   "name": "rump-static",
   "description": "Rump piece for handling static files",
   "author": "Juan Placencia",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "license": "MIT",
   "homepage": "https://github.com/rumps/rump-static",
   "repository": {
@@ -20,6 +20,6 @@
     "gulp-util": "^3.0.1"
   },
   "peerDependencies": {
-    "rump": "^0.2.0"
+    "rump": "^0.3.0"
   }
 }

@@ -7,7 +7,7 @@ var plumber = require('gulp-plumber');
 var rump = require('rump');
 var util = require('gulp-util');
 
-gulp.task('rump:build:static', function() {
+gulp.task(rump.taskName('build:static'), function() {
   var source = path.join(rump.configs.main.paths.source.root,
                          rump.configs.main.paths.source.static,
                          rump.configs.main.globs.build.static);
@@ -21,4 +21,4 @@ gulp.task('rump:build:static', function() {
   .pipe(gulp.dest(destination));
 });
 
-gulp.tasks['rump:build'].dep.push('rump:build:static');
+gulp.tasks[rump.taskName('build')].dep.push(rump.taskName('build:static'));

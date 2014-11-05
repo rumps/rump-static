@@ -2,7 +2,6 @@
 [![NPM](http://img.shields.io/npm/v/rump-static.svg?style=flat-square)](https://www.npmjs.org/package/rump-static)
 ![License](http://img.shields.io/npm/l/rump-static.svg?style=flat-square)
 [![Dependencies](http://img.shields.io/david/rumps/rump-static.svg?style=flat-square)](https://david-dm.org/rumps/rump-static)
-[![Peer Dependencies](http://img.shields.io/david/peer/rumps/rump-static.svg?style=flat-square)](https://david-dm.org/rumps/rump-static#info=peerDependencies)
 
 
 ## About

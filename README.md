@@ -12,7 +12,7 @@ information, visit the [Rump repository](https://github.com/rumps/rump).
 ## API
 The following is appended to the core Rump API:
 
-### `rump.addGulpTasks()`
+### `rump.addGulpTasks(options)`
 This module adds the following tasks:
 
 - `build:static` will copy all files from source to destination. This task is

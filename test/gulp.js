@@ -3,9 +3,10 @@
 var assert = require('better-assert');
 var fs = require('graceful-fs');
 var gulp = require('gulp');
+var util = require('gulp-util');
 var any = require('lodash/collection/any');
 var toArray = require('lodash/lang/toArray');
-var util = require('gulp-util');
+var sinon = require('sinon');
 var rump = require('../lib');
 var configs = require('../lib/configs');
 
@@ -14,7 +15,6 @@ describe('rump static tasks', function() {
 
   before(function() {
     original = fs.readFileSync('test/src/index.html').toString();
-    rump.addGulpTasks({prefix: 'spec'});
   });
 
   beforeEach(function() {
@@ -36,7 +36,13 @@ describe('rump static tasks', function() {
     fs.writeFileSync('test/src/index.html', original);
   });
 
-  it('are defined', function() {
+  it('are added and defined', function() {
+    var callback = sinon.spy();
+    rump.on('gulp:main', callback);
+    rump.on('gulp:static', callback);
+    rump.addGulpTasks({prefix: 'spec'});
+    // TODO Remove no callback check on next major core update
+    assert(!callback.called || callback.calledTwice);
     assert(gulp.tasks['spec:info:static']);
     assert(gulp.tasks['spec:build:static']);
     assert(gulp.tasks['spec:watch:static']);

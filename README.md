@@ -2,6 +2,7 @@
 [![NPM](http://img.shields.io/npm/v/rump-static.svg?style=flat-square)](https://www.npmjs.org/package/rump-static)
 ![License](http://img.shields.io/npm/l/rump-static.svg?style=flat-square)
 [![Travis](http://img.shields.io/travis/rumps/rump-static.svg?style=flat-square)](https://travis-ci.org/rumps/rump-static)
+[![Appveyor](http://img.shields.io/appveyor/ci/jupl/rump-static.svg?style=flat-square)](https://ci.appveyor.com/project/jupl/rump-static)
 [![Dependencies](http://img.shields.io/david/rumps/rump-static.svg?style=flat-square)](https://david-dm.org/rumps/rump-static)
 [![Dev Dependencies](http://img.shields.io/david/dev/rumps/rump-static.svg?style=flat-square)](https://david-dm.org/rumps/rump-static#info=devDependencies)
 

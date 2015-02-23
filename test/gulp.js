@@ -1,11 +1,10 @@
 'use strict';
 
-var assert = require('better-assert');
-var fs = require('graceful-fs');
+var assert = require('assert');
+var co = require('co');
+var fs = require('mz/fs');
 var gulp = require('gulp');
 var util = require('gulp-util');
-var any = require('lodash/collection/any');
-var toArray = require('lodash/lang/toArray');
 var path = require('path');
 var sinon = require('sinon');
 var rump = require('../lib');
@@ -14,9 +13,9 @@ var configs = require('../lib/configs');
 describe('rump static tasks', function() {
   var original;
 
-  before(function() {
-    original = fs.readFileSync('test/src/index.html').toString();
-  });
+  before(co.wrap(function*() {
+    original = yield fs.readFile('test/src/index.html', 'utf8');
+  }));
 
   beforeEach(function() {
     rump.configure({
@@ -33,9 +32,9 @@ describe('rump static tasks', function() {
     configs.watch = false;
   });
 
-  after(function() {
-    fs.writeFileSync('test/src/index.html', original);
-  });
+  after(co.wrap(function*() {
+    yield fs.writeFile('test/src/index.html', original);
+  }));
 
   it('are added and defined', function() {
     var callback = sinon.spy();
@@ -43,35 +42,33 @@ describe('rump static tasks', function() {
     rump.on('gulp:static', callback);
     rump.addGulpTasks({prefix: 'spec'});
     // TODO Remove no callback check on next major core update
-    assert(!callback.called || callback.calledTwice);
-    assert(gulp.tasks['spec:info:static']);
-    assert(gulp.tasks['spec:build:static']);
-    assert(gulp.tasks['spec:watch:static']);
+    assert(!callback.called || callback.calledTwice, 'callback may be called');
+    assert(gulp.tasks['spec:info:static'], 'info task exists');
+    assert(gulp.tasks['spec:build:static'], 'build task exists');
+    assert(gulp.tasks['spec:watch:static'], 'watch task exists');
   });
 
   it('info:static', function() {
     var oldLog = console.log;
     var logs = [];
     console.log = function() {
-      logs.push(util.colors.stripColor(toArray(arguments).join(' ')));
+      logs.push(util.colors.stripColor(Array.from(arguments).join(' ')));
     };
     gulp.start('spec:info');
     console.log = oldLog;
-    assert(any(logs, hasPaths));
-    assert(any(logs, hasHtmlFile));
+    assert(logs.some(hasPaths), 'paths are listed');
+    assert(logs.some(hasHtmlFile), 'files are listed');
   });
 
   it('build:static, watch:static', function(done) {
-    gulp.task('postbuild', ['spec:watch'], function() {
-      assert(fs.readFileSync('tmp/index.html').toString() === original);
-      timeout(function() {
-        fs.writeFileSync('test/src/index.html', '<h1>New</h1>');
-        timeout(function() {
-          assert(fs.readFileSync('tmp/index.html').toString() !== original);
-          done();
-        }, 950);
-      }, 950);
-    });
+    gulp.task('postbuild', ['spec:watch'], co.wrap(function*() {
+      var content = yield fs.readFile('tmp/index.html', 'utf8');
+      assert(content === original, 'file is copied');
+      yield fs.writeFile('test/src/index.html', '<h1>New</h1>');
+      content = yield fs.readFile('tmp/index.html', 'utf8');
+      assert(content === original, 'file is updated');
+      done();
+    }));
     gulp.start('postbuild');
   });
 });
@@ -81,13 +78,5 @@ function hasHtmlFile(log) {
 }
 
 function hasPaths(log) {
-  return ~log.indexOf(path.join('test', 'src')) && ~log.indexOf('tmp');
-}
-
-function timeout(cb, delay) {
-  process.nextTick(function() {
-    setTimeout(function() {
-      process.nextTick(cb);
-    }, delay || 0);
-  });
+  return log.includes(path.join('test', 'src')) && log.includes('tmp');
 }

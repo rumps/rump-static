@@ -12,6 +12,7 @@ var gulp = require('gulp');
 var util = require('gulp-util');
 var path = require('path');
 var sinon = require('sinon');
+var sleep = require('timeout-then');
 var rump = require('../lib');
 var configs = require('../lib/configs');
 
@@ -67,12 +68,19 @@ describe('rump static tasks', function() {
 
   it('build:static, watch:static', function(done) {
     gulp.task('postbuild', ['spec:watch'], co.wrap(function*() {
-      var content = yield fs.readFile('tmp/index.html', 'utf8');
-      assert(content === original, 'file is copied');
-      yield fs.writeFile('test/src/index.html', '<h1>New</h1>');
-      content = yield fs.readFile('tmp/index.html', 'utf8');
-      assert(content === original, 'file is updated');
-      done();
+      try {
+        var content = yield fs.readFile('tmp/index.html', 'utf8');
+        assert(content === original, 'file is copied');
+        yield sleep(800);
+        yield fs.writeFile('test/src/index.html', '<h1>New</h1>');
+        yield sleep(800);
+        content = yield fs.readFile('tmp/index.html', 'utf8');
+        assert(content !== original, 'file is updated');
+        done();
+      }
+      catch(e) {
+        done(e);
+      }
     }));
     gulp.start('postbuild');
   });

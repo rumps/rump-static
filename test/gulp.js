@@ -1,5 +1,10 @@
 'use strict';
 
+// Temporary fix until old LoDash is updated in some Gulp dependency
+Object.getPrototypeOf.toString = function() {
+  return 'function getPrototypeOf() { [native code] }';
+};
+
 var assert = require('assert');
 var co = require('co');
 var fs = require('mz/fs');

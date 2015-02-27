@@ -22,7 +22,7 @@
     "gulp-util": "^3.0.1"
   },
   "devDependencies": {
-    "babel": "^4.4.3",
+    "babel": "^4.5.5",
     "co": "^4.4.0",
     "gulp": "^3.8.8",
     "jshint": "^2.6.0",

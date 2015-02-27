@@ -6,6 +6,7 @@ Object.getPrototypeOf.toString = function() {
 };
 
 var assert = require('assert');
+var bufferEqual = require('buffer-equal');
 var co = require('co');
 var fs = require('mz/fs');
 var gulp = require('gulp');
@@ -14,15 +15,8 @@ var path = require('path');
 var sinon = require('sinon');
 var sleep = require('timeout-then');
 var rump = require('../lib');
-var configs = require('../lib/configs');
 
 describe('rump static tasks', function() {
-  var original;
-
-  before(co.wrap(function*() {
-    original = yield fs.readFile('test/src/index.html', 'utf8');
-  }));
-
   beforeEach(function() {
     rump.configure({
       paths: {
@@ -35,12 +29,7 @@ describe('rump static tasks', function() {
         }
       }
     });
-    configs.watch = false;
   });
-
-  after(co.wrap(function*() {
-    yield fs.writeFile('test/src/index.html', original);
-  }));
 
   it('are added and defined', function() {
     var callback = sinon.spy();
@@ -48,13 +37,13 @@ describe('rump static tasks', function() {
     rump.on('gulp:static', callback);
     rump.addGulpTasks({prefix: 'spec'});
     // TODO Remove no callback check on next major core update
-    assert(!callback.called || callback.calledTwice, 'callback may be called');
-    assert(gulp.tasks['spec:info:static'], 'info task exists');
-    assert(gulp.tasks['spec:build:static'], 'build task exists');
-    assert(gulp.tasks['spec:watch:static'], 'watch task exists');
+    assert(!callback.called || callback.calledTwice);
+    assert(gulp.tasks['spec:info:static']);
+    assert(gulp.tasks['spec:build:static']);
+    assert(gulp.tasks['spec:watch:static']);
   });
 
-  it('info:static', function() {
+  it('display correct information in info task', function() {
     var oldLog = console.log;
     var logs = [];
     console.log = function() {
@@ -62,27 +51,40 @@ describe('rump static tasks', function() {
     };
     gulp.start('spec:info');
     console.log = oldLog;
-    assert(logs.some(hasPaths), 'paths are listed');
-    assert(logs.some(hasHtmlFile), 'files are listed');
+    assert(logs.some(hasPaths));
+    assert(logs.some(hasHtmlFile));
   });
 
-  it('build:static, watch:static', function(done) {
-    gulp.task('postbuild', ['spec:watch'], co.wrap(function*() {
-      try {
-        var content = yield fs.readFile('tmp/index.html', 'utf8');
-        assert(content === original, 'file is copied');
-        yield sleep(800);
-        yield fs.writeFile('test/src/index.html', '<h1>New</h1>');
-        yield sleep(800);
-        content = yield fs.readFile('tmp/index.html', 'utf8');
-        assert(content !== original, 'file is updated');
-        done();
-      }
-      catch(e) {
-        done(e);
-      }
+
+  describe('for building', function() {
+    var original;
+
+    before(co.wrap(function*() {
+      original = yield fs.readFile('test/src/index.html');
     }));
-    gulp.start('postbuild');
+
+    before(function(done) {
+      gulp.task('postbuild', ['spec:watch'], function() {
+        done();
+      });
+      gulp.start('postbuild');
+    });
+
+    after(co.wrap(function*() {
+      yield sleep(800);
+      yield fs.writeFile('test/src/index.html', original);
+      yield sleep(800);
+    }));
+
+    it('handles updates', co.wrap(function*() {
+      var content = yield fs.readFile('tmp/index.html');
+      assert(bufferEqual(content, original));
+      yield sleep(800);
+      yield fs.writeFile('test/src/index.html', '<h1>New</h1>');
+      yield sleep(800);
+      content = yield fs.readFile('tmp/index.html');
+      assert(!bufferEqual(content, original));
+    }));
   });
 });
 

@@ -71,9 +71,7 @@ describe('rump static tasks', function() {
     });
 
     after(co.wrap(function*() {
-      yield sleep(800);
       yield fs.writeFile('test/src/index.html', original);
-      yield sleep(800);
     }));
 
     it('handles updates', co.wrap(function*() {

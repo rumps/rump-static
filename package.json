@@ -1,8 +1,14 @@
 {
+  "name": "rump-",
+  "version": "",
+  "author": "Juan Placencia",
+  "description": "",
   "license": "MIT",
+  "homepage": "https://github.com/rumps/",
   "main": "./lib",
   "repository": {
-    "type": "git"
+    "type": "git",
+    "url": "https://github.com/rumps/"
   },
   "scripts": {
     "preci": "npm run lint",

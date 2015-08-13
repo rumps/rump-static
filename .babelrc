@@ -1,0 +1,4 @@
+{
+  "only": ["src", "test"],
+  "stage": 0
+}

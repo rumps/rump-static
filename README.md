@@ -1,13 +1,25 @@
 # Rump Static
 [![NPM](http://img.shields.io/npm/v/rump-static.svg?style=flat-square)](https://www.npmjs.org/package/rump-static)
 ![License](http://img.shields.io/npm/l/rump-static.svg?style=flat-square)
-<br>
+
+
+## Status
+
+### Master
 [![Dependencies](http://img.shields.io/david/rumps/static.svg?style=flat-square)](https://david-dm.org/rumps/static)
 [![Dev Dependencies](http://img.shields.io/david/dev/rumps/static.svg?style=flat-square)](https://david-dm.org/rumps/static#info=devDependencies)
 <br>
 [![Travis](http://img.shields.io/travis/rumps/static.svg?style=flat-square&label=travis)](https://travis-ci.org/rumps/static)
 [![Appveyor](http://img.shields.io/appveyor/ci/jupl/rump-static.svg?style=flat-square&label=appveyor)](https://ci.appveyor.com/project/jupl/rump-static)
-[![Codecov](http://img.shields.io/codecov/c/github/rumps/static.svg?style=flat-square)](https://codecov.io/github/rumps/static?view=all)
+[![Codecov](http://img.shields.io/codecov/c/github/rumps/static.svg?style=flat-square&label=codecov)](https://codecov.io/github/rumps/static?view=all)
+
+### Develop
+[![Dependencies](http://img.shields.io/david/rumps/static/develop.svg?style=flat-square)](https://david-dm.org/rumps/static/develop)
+[![Dev Dependencies](http://img.shields.io/david/dev/rumps/static/develop.svg?style=flat-square)](https://david-dm.org/rumps/static/develop#info=devDependencies)
+<br>
+[![Travis](http://img.shields.io/travis/rumps/static/develop.svg?style=flat-square&label=travis)](https://travis-ci.org/rumps/static)
+[![Appveyor](http://img.shields.io/appveyor/ci/jupl/rump-static/develop.svg?style=flat-square&label=appveyor)](https://ci.appveyor.com/project/jupl/rump-static)
+[![Codecov](http://img.shields.io/codecov/c/github/rumps/static/develop.svg?style=flat-square&label=codecov)](https://codecov.io/github/rumps/static?branch=develop&view=all)
 
 
 ## About

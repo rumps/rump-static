@@ -24,9 +24,8 @@ task(name('info:static'), () => {
   }
   console.log()
   console.log(magenta(`--- Static v${version}`))
-  console.log(
-    `Static files from ${green(source)}`,
-    `are copied to ${green(destination)}`)
+  console.log(`Static files from ${green(source)}`,
+              `are copied to ${green(destination)}`)
   console.log('Affected files:')
   files.forEach(file => console.log(blue(relative(source, file))))
   console.log()

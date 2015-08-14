@@ -1,95 +1,73 @@
-'use strict';
+import '../src'
+import bufferEqual from 'buffer-equal'
+import gulp from 'gulp'
+import timeout from 'timeout-then'
+import rump from 'rump'
+import {colors} from 'gulp-util'
+import {readFile, writeFile} from 'mz/fs'
+import {spy} from 'sinon'
 
-// Temporary fix until old LoDash is updated in some Gulp dependency
-Object.getPrototypeOf.toString = function() {
-  return 'function getPrototypeOf() { [native code] }';
-};
+const {stripColor} = colors
 
-var assert = require('assert');
-var bufferEqual = require('buffer-equal');
-var co = require('co');
-var fs = require('mz/fs');
-var gulp = require('gulp');
-var util = require('gulp-util');
-var path = require('path');
-var sinon = require('sinon');
-var sleep = require('timeout-then');
-var rump = require('../lib');
+describe('tasks', () => {
+  beforeEach(() => {
+    rump.configure({paths: {
+      source: {root: 'test/src', static: ''},
+      destination: {root: 'tmp'},
+    }})
+  })
 
-describe('rump static tasks', function() {
-  beforeEach(function() {
-    rump.configure({
-      paths: {
-        source: {
-          root: 'test/src',
-          static: ''
-        },
-        destination: {
-          root: 'tmp'
-        }
-      }
-    });
-  });
+  it('are added and defined', () => {
+    const callback = spy()
+    rump.on('gulp:main', callback)
+    rump.on('gulp:static', callback)
+    rump.addGulpTasks({prefix: 'spec'})
+    callback.should.be.calledTwice()
+    gulp.tasks['spec:info:static'].should.be.ok()
+    gulp.tasks['spec:build:static'].should.be.ok()
+    gulp.tasks['spec:watch:static'].should.be.ok()
+  })
 
-  it('are added and defined', function() {
-    var callback = sinon.spy();
-    rump.on('gulp:main', callback);
-    rump.on('gulp:static', callback);
-    rump.addGulpTasks({prefix: 'spec'});
-    // TODO Remove no callback check on next major core update
-    assert(!callback.called || callback.calledTwice);
-    assert(gulp.tasks['spec:info:static']);
-    assert(gulp.tasks['spec:build:static']);
-    assert(gulp.tasks['spec:watch:static']);
-  });
+  it('display correct information in info task', () => {
+    const logs = [],
+          {log} = console
+    console.log = (...args) => logs.push(stripColor(args.join(' ')))
+    gulp.start('spec:info')
+    console.log = log
+    logs.slice(-6).should.eql([
+      '',
+      '--- Static v0.7.0',
+      'Static files from test/src are copied to tmp',
+      'Affected files:',
+      'index.html',
+      '',
+    ])
+  })
 
-  it('display correct information in info task', function() {
-    var oldLog = console.log;
-    var logs = [];
-    console.log = function() {
-      logs.push(util.colors.stripColor(Array.from(arguments).join(' ')));
-    };
-    gulp.start('spec:info');
-    console.log = oldLog;
-    assert(logs.some(hasPaths));
-    assert(logs.some(hasHtmlFile));
-  });
+  describe('for building', () => {
+    let original
 
+    before(async() => {
+      original = await readFile('test/src/index.html')
+    })
 
-  describe('for building', function() {
-    var original;
+    before(done => {
+      gulp.task('postbuild', ['spec:watch'], () => done())
+      gulp.start('postbuild')
+    })
 
-    before(co.wrap(function*() {
-      original = yield fs.readFile('test/src/index.html');
-    }));
+    after(async() => {
+      await writeFile('test/src/index.html', original)
+    })
 
-    before(function(done) {
-      gulp.task('postbuild', ['spec:watch'], function() {
-        done();
-      });
-      gulp.start('postbuild');
-    });
-
-    after(co.wrap(function*() {
-      yield fs.writeFile('test/src/index.html', original);
-    }));
-
-    it('handles updates', co.wrap(function*() {
-      var content = yield fs.readFile('tmp/index.html');
-      assert(bufferEqual(content, original));
-      yield sleep(800);
-      yield fs.writeFile('test/src/index.html', '<h1>New</h1>');
-      yield sleep(800);
-      content = yield fs.readFile('tmp/index.html');
-      assert(!bufferEqual(content, original));
-    }));
-  });
-});
-
-function hasHtmlFile(log) {
-  return log === 'index.html';
-}
-
-function hasPaths(log) {
-  return log.includes(path.join('test', 'src')) && log.includes('tmp');
-}
+    it('handles updates', async() => {
+      let content = await readFile('tmp/index.html')
+      bufferEqual(content, original).should.be.true()
+      await timeout(800)
+      await writeFile('test/src/index.html', '<h1>New</h1>')
+      await timeout(800)
+      content = await readFile('tmp/index.html')
+      bufferEqual(content, original).should.be.false()
+    })
+  })
+})

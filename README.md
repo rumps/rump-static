@@ -1,15 +1,18 @@
 # Rump Static
 [![NPM](http://img.shields.io/npm/v/rump-static.svg?style=flat-square)](https://www.npmjs.org/package/rump-static)
 ![License](http://img.shields.io/npm/l/rump-static.svg?style=flat-square)
-[![Travis](http://img.shields.io/travis/rumps/rump-static.svg?style=flat-square&label=travis)](https://travis-ci.org/rumps/rump-static)
+<br>
+[![Dependencies](http://img.shields.io/david/rumps/static.svg?style=flat-square)](https://david-dm.org/rumps/static)
+[![Dev Dependencies](http://img.shields.io/david/dev/rumps/static.svg?style=flat-square)](https://david-dm.org/rumps/static#info=devDependencies)
+<br>
+[![Travis](http://img.shields.io/travis/rumps/static.svg?style=flat-square&label=travis)](https://travis-ci.org/rumps/static)
 [![Appveyor](http://img.shields.io/appveyor/ci/jupl/rump-static.svg?style=flat-square&label=appveyor)](https://ci.appveyor.com/project/jupl/rump-static)
-[![Dependencies](http://img.shields.io/david/rumps/rump-static.svg?style=flat-square)](https://david-dm.org/rumps/rump-static)
-[![Dev Dependencies](http://img.shields.io/david/dev/rumps/rump-static.svg?style=flat-square)](https://david-dm.org/rumps/rump-static#info=devDependencies)
+[![Codecov](http://img.shields.io/codecov/c/github/rumps/static.svg?style=flat-square)](https://codecov.io/github/rumps/static?view=all)
 
 
 ## About
 Rump Static is a Rump module that handles copying static files as is. For more
-information, visit the [Rump repository](https://github.com/rumps/rump).
+information, visit the [core repository](https://github.com/rumps/core).
 
 
 ## API

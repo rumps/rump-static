@@ -48,14 +48,13 @@ describe('tasks', () => {
   describe('for building', () => {
     let original
 
-    before(async() => {
-      await writeFile('test/src/index.html', original)
-    })
-
-    before(done => {
+    before(async(done) => {
+      original = await readFile('test/src/index.html')
       gulp.task('postbuild', ['spec:watch'], () => done())
       gulp.start('postbuild')
     })
+
+    after(async() => await writeFile('test/src/index.html', original))
 
     it('handles updates', async() => {
       let content = await readFile('tmp/index.html')

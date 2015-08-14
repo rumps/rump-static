@@ -5,6 +5,7 @@ import timeout from 'timeout-then'
 import rump from 'rump'
 import {colors} from 'gulp-util'
 import {readFile, writeFile} from 'mz/fs'
+import {sep} from 'path'
 import {spy} from 'sinon'
 
 const {stripColor} = colors
@@ -37,7 +38,7 @@ describe('tasks', () => {
     logs.slice(-6).should.eql([
       '',
       '--- Static v0.7.0',
-      'Static files from test/src are copied to tmp',
+      `Static files from test${sep}src are copied to tmp`,
       'Affected files:',
       'index.html',
       '',

@@ -59,6 +59,7 @@ describe('tasks', () => {
     })
 
     it('handles updates', async() => {
+      await timeout(800)
       let content = await readFile('tmp/index.html')
       bufferEqual(content, original).should.be.true()
       await timeout(800)

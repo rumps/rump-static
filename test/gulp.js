@@ -49,7 +49,7 @@ describe('tasks', () => {
     let original
 
     before(async function(done) {
-      this.timeout(3000)
+      this.timeout(10000)
       original = await readFile('test/src/index.html')
       gulp.task('postbuild', ['spec:watch'], () => timeout(800).then(done))
       gulp.start('postbuild')

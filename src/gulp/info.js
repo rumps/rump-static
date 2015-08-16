@@ -5,7 +5,7 @@ import {colors} from 'gulp-util'
 import {join, relative} from 'path'
 import {version} from '../../package'
 
-const  name = ::rump.taskName,
+const name = ::rump.taskName,
       task = ::gulp.task,
       {blue, green, magenta} = colors,
       {configs} = rump

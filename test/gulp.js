@@ -54,8 +54,7 @@ describe('tasks', function() {
     before(async() => {
       original = await readFile('test/fixtures/index.html')
       await startWatching()
-      await timeout(1000)
-      await exec('sync')
+      await sync()
     })
 
     after(async() => await writeFile('test/fixtures/index.html', original))
@@ -64,13 +63,18 @@ describe('tasks', function() {
       let content = await readFile('tmp/index.html')
       bufferEqual(content, original).should.be.true()
       await writeFile('test/fixtures/index.html', '<h1>New</h1>')
-      await timeout(1000)
-      await exec('sync')
+      await sync()
       content = await readFile('tmp/index.html')
       bufferEqual(content, original).should.be.false()
     })
   })
 })
+
+async function sync() {
+  await exec('sync')
+  await timeout(1000)
+  await exec('sync')
+}
 
 function startWatching() {
   return new Promise(resolve => {

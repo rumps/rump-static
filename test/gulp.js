@@ -63,12 +63,10 @@ describe('tasks', function() {
     afterEach(() => writeFile('test/fixtures/index.html', original))
 
     it('handles updates', async() => {
-      let content = await readFile('tmp/index.html')
-      bufferEqual(content, original).should.be.true()
+      bufferEqual(original, await readFile('tmp/index.html')).should.be.true()
       await writeFile('test/fixtures/index.html', '<h1>New</h1>')
       await timeout(1000)
-      content = await readFile('tmp/index.html')
-      bufferEqual(content, original).should.be.false()
+      bufferEqual(original, await readFile('tmp/index.html')).should.be.false()
     })
   })
 })

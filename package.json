@@ -11,8 +11,7 @@
     "url": "https://github.com/rumps/static"
   },
   "scripts": {
-    "preci": "npm run test",
-    "ci": "babel-node node_modules/.bin/isparta cover --report json _mocha",
+    "ci": "npm run test && babel-node node_modules/.bin/isparta cover --report json _mocha",
     "postci": "codecov < coverage/coverage.json",
     "precompile": "[ -d lib ] && trash lib || true",
     "compile": "babel src --out-dir lib --source-maps=inline",

@@ -57,6 +57,12 @@ describe('tasks', function() {
         gulp.start('postbuild')
       })
       await timeout(1000)
+      try {
+        await readFile('tmp/index.html')
+      }
+      catch(e) {
+        return
+      }
     })
 
     after(async() => await writeFile('test/fixtures/index.html', original))

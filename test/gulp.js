@@ -15,7 +15,7 @@ describe('tasks', function() {
 
   beforeEach(() => {
     rump.configure({paths: {
-      source: {root: 'test/src', static: ''},
+      source: {root: 'test/fixtures', static: ''},
       destination: {root: 'tmp'},
     }})
   })
@@ -40,7 +40,7 @@ describe('tasks', function() {
     logs.slice(-6).should.eql([
       '',
       '--- Static v0.7.0',
-      `Static files from test${sep}src are copied to tmp`,
+      `Static files from test${sep}fixtures are copied to tmp`,
       'Affected files:',
       'index.html',
       '',
@@ -51,18 +51,18 @@ describe('tasks', function() {
     let original
 
     before(async(done) => {
-      original = await readFile('test/src/index.html')
+      original = await readFile('test/fixtures/index.html')
       gulp.task('postbuild', ['spec:watch'], () => done())
       gulp.start('postbuild')
     })
 
-    after(async() => await writeFile('test/src/index.html', original))
+    after(async() => await writeFile('test/fixtures/index.html', original))
 
     it('handles updates', async() => {
       let content = await readFile('tmp/index.html')
       bufferEqual(content, original).should.be.true()
       await timeout(1000)
-      await writeFile('test/src/index.html', '<h1>New</h1>')
+      await writeFile('test/fixtures/index.html', '<h1>New</h1>')
       await timeout(1000)
       content = await readFile('tmp/index.html')
       bufferEqual(content, original).should.be.false()

@@ -61,9 +61,9 @@ describe('tasks', function() {
     it('handles updates', async() => {
       let content = await readFile('tmp/index.html')
       bufferEqual(content, original).should.be.true()
-      await timeout(800)
+      await timeout(3000)
       await writeFile('test/src/index.html', '<h1>New</h1>')
-      await timeout(800)
+      await timeout(3000)
       content = await readFile('tmp/index.html')
       bufferEqual(content, original).should.be.false()
     })

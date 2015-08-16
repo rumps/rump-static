@@ -3,6 +3,7 @@ import bufferEqual from 'buffer-equal'
 import gulp from 'gulp'
 import rump from 'rump'
 import timeout from 'timeout-then'
+import {exec} from 'child-process-promise'
 import {colors} from 'gulp-util'
 import {readFile, writeFile} from 'mz/fs'
 import {sep} from 'path'
@@ -50,10 +51,11 @@ describe('tasks', function() {
   describe('for building', () => {
     let original
 
-    before(async(done) => {
+    before(async() => {
       original = await readFile('test/fixtures/index.html')
-      gulp.task('postbuild', ['spec:watch'], () => timeout(2000).then(done))
-      gulp.start('postbuild')
+      await startWatching()
+      await timeout(1000)
+      await exec('sync')
     })
 
     after(async() => await writeFile('test/fixtures/index.html', original))
@@ -61,11 +63,18 @@ describe('tasks', function() {
     it('handles updates', async() => {
       let content = await readFile('tmp/index.html')
       bufferEqual(content, original).should.be.true()
-      await timeout(1000)
       await writeFile('test/fixtures/index.html', '<h1>New</h1>')
       await timeout(1000)
+      await exec('sync')
       content = await readFile('tmp/index.html')
       bufferEqual(content, original).should.be.false()
     })
   })
 })
+
+function startWatching() {
+  return new Promise(resolve => {
+    gulp.task('postbuild', ['spec:watch'], resolve)
+    gulp.start('postbuild')
+  })
+}

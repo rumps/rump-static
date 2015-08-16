@@ -48,28 +48,22 @@ describe('tasks', () => {
   describe('for building', () => {
     let original
 
-    before(async() => original = await readFile('test/src/index.html'))
-
-    before(function(done) {
-      this.timeout(0)
+    before(async(done) => {
+      original = await readFile('test/src/index.html')
       gulp.task('postbuild', ['spec:watch'], () => done())
       gulp.start('postbuild')
     })
 
     after(async() => await writeFile('test/src/index.html', original))
 
-    it('handles updates', function(done) {
-      this.timeout(0)
-      async() => {
-        let content = await readFile('tmp/index.html')
-        bufferEqual(content, original).should.be.true()
-        await timeout(1000)
-        await writeFile('test/src/index.html', '<h1>New</h1>')
-        await timeout(1000)
-        content = await readFile('tmp/index.html')
-        bufferEqual(content, original).should.be.false()
-        done()
-      }()
+    it('handles updates', async() => {
+      let content = await readFile('tmp/index.html')
+      bufferEqual(content, original).should.be.true()
+      await timeout(800)
+      await writeFile('test/src/index.html', '<h1>New</h1>')
+      await timeout(800)
+      content = await readFile('tmp/index.html')
+      bufferEqual(content, original).should.be.false()
     })
   })
 })

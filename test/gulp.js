@@ -57,23 +57,24 @@ describe('tasks', function() {
         gulp.start('postbuild')
       })
       await timeout(1000)
-      try {
-        await readFile('tmp/index.html')
-      }
-      catch(e) {
-        return
-      }
     })
 
     after(async() => await writeFile('test/fixtures/index.html', original))
 
     it('handles updates', async() => {
+      console.log(1)
       let content = await readFile('tmp/index.html')
+      console.log(2)
       bufferEqual(content, original).should.be.true()
+      console.log(3)
       await writeFile('test/fixtures/index.html', '<h1>New</h1>')
+      console.log(4)
       await timeout(1000)
+      console.log(5)
       content = await readFile('tmp/index.html')
+      console.log(6)
       bufferEqual(content, original).should.be.false()
+      console.log(7)
     })
   })
 })

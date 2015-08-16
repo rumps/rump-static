@@ -1,3 +1,4 @@
+sudo: false
 language: node_js
 install:
   - '[ "$TRAVIS_NODE_VERSION" != "0.10" ] || npm install -g npm@next'

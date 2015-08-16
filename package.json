@@ -33,7 +33,6 @@
     "babel": "^5.8.19",
     "babel-eslint": "^4.0.5",
     "buffer-equal": "^0.0.1",
-    "child-process-promise": "^1.1.0",
     "codecov.io": "^0.1.5",
     "eslint": "^1.0.0",
     "graceful-fs": "^4.1.2",

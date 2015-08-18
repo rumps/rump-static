@@ -13,7 +13,7 @@ const {stripColor} = colors
 describe('tasks', function() {
   this.timeout(0)
 
-  beforeEach(() => {
+  afterEach(() => {
     rump.configure({paths: {
       source: {root: 'test/fixtures', static: ''},
       destination: {root: 'tmp'},
@@ -34,7 +34,7 @@ describe('tasks', function() {
   it('display correct information in info task', () => {
     const logs = [],
           {log} = console
-    console.log = (...args) => logs.push(stripColor(args.join(' ')))
+    console.log = newLog
     gulp.start('spec:info')
     console.log = log
     logs.slice(-6).should.eql([
@@ -45,6 +45,16 @@ describe('tasks', function() {
       'index.html',
       '',
     ])
+    rump.reconfigure({paths: {source: {static: 'nonexistant'}}})
+    logs.length = 0
+    console.log = newLog
+    gulp.start('spec:info')
+    console.log = log
+    logs.length.should.not.be.above(4)
+
+    function newLog(...args) {
+      logs.push(stripColor(args.join(' ')))
+    }
   })
 
   describe('for building', () => {

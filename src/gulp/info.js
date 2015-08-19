@@ -5,10 +5,10 @@ import {colors} from 'gulp-util'
 import {join, relative} from 'path'
 import {version} from '../../package'
 
-const {blue, green, magenta} = colors,
-      {configs} = rump,
-      name = ::rump.taskName,
-      task = ::gulp.task
+const name = ::rump.taskName,
+      task = ::gulp.task,
+      {blue, green, magenta} = colors,
+      {configs} = rump
 
 task(name('info:static'), () => {
   const glob = join(configs.main.paths.source.root,
@@ -24,9 +24,8 @@ task(name('info:static'), () => {
   }
   console.log()
   console.log(magenta(`--- Static v${version}`))
-  console.log(
-    `Static files from ${green(source)}`,
-    `are copied to ${green(destination)}`)
+  console.log(`Static files from ${green(source)}`,
+              `are copied to ${green(destination)}`)
   console.log('Affected files:')
   files.forEach(file => console.log(blue(relative(source, file))))
   console.log()

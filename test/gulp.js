@@ -39,7 +39,7 @@ describe('tasks', function() {
     console.log = log
     logs.slice(-6).should.eql([
       '',
-      '--- Static v0.7.0',
+      '--- Static v0.8.0',
       `Static files from test${sep}fixtures are copied to tmp`,
       'Affected files:',
       'index.html',
@@ -57,14 +57,23 @@ describe('tasks', function() {
     }
   })
 
-  describe('for building', () => {
+  it('for building', async() => {
+    const original = await readFile('test/fixtures/index.html')
+    await new Promise(resolve => {
+      gulp.task('postbuild', ['spec:build'], resolve)
+      gulp.start('postbuild')
+    })
+    bufferEqual(original, await readFile('tmp/index.html')).should.be.true()
+  })
+
+  describe('for watching', () => {
     let original
 
     before(async() => {
       original = await readFile('test/fixtures/index.html')
       await new Promise(resolve => {
-        gulp.task('postbuild', ['spec:watch'], resolve)
-        gulp.start('postbuild')
+        gulp.task('postwatch', ['spec:watch'], resolve)
+        gulp.start('postwatch')
       })
     })
 

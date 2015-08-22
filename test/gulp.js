@@ -39,7 +39,7 @@ describe('tasks', function() {
     console.log = log
     logs.slice(-6).should.eql([
       '',
-      '--- Static v0.7.0',
+      '--- Static v0.8.0',
       `Static files from test${sep}fixtures are copied to tmp`,
       'Affected files:',
       'index.html',

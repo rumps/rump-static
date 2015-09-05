@@ -5,15 +5,15 @@ import rump from 'rump'
 import {noop} from 'gulp-util'
 import {join} from 'path'
 
-const name = ::rump.taskName,
-      task = ::gulp.task,
-      {configs} = rump
+const name = ::rump.taskName
+const task = ::gulp.task
+const {configs} = rump
 
 task(name('build:static'), () => {
   const source = join(configs.main.paths.source.root,
                       configs.main.paths.source.static,
-                      configs.main.globs.build.static),
-        destination = join(configs.main.paths.destination.root,
+                      configs.main.globs.build.static)
+  const destination = join(configs.main.paths.destination.root,
                            configs.main.paths.destination.static)
   return src([source].concat(configs.main.globs.global))
     .pipe((configs.watch ? plumber : noop)())
